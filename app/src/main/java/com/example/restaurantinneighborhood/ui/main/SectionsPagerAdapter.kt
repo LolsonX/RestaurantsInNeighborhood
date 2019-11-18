@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.example.restaurantinneighborhood.R
 
 private val TAB_TITLES = arrayOf(
-    R.string.Map,
-    R.string.List
+    R.string.All,
+    R.string.Favourites
 )
 
 /**
@@ -20,11 +20,11 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
 
     override fun getItem(position: Int): Fragment {
         // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
+        // Return a FavouriteMapFragment (defined as a static inner class below).
         return if (position == 0) {
-            MapFragment.newInstance()
+            FavMapFragment.newInstance(false)
         } else {
-            PlaceholderFragment.newInstance(2)
+            FavMapFragment.newInstance(true)
         }
     }
 
