@@ -1,5 +1,6 @@
 package com.example.restaurantinneighborhood.ui.main
 
+import android.content.ClipDescription
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -20,9 +21,13 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.restaurantinneighborhood.data.models.Restaurant
 import com.example.restaurantinneighborhood.data.models.RestaurantModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val isFavourite = "isFavourite"
 
@@ -34,15 +39,25 @@ private const val isFavourite = "isFavourite"
  * Use the [FavMapFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FavMapFragment : Fragment() {
+class FavMapFragment : Fragment(), Observer {
+    private var collection = RestaurantModel
+    private var restaurantList: ArrayList<Restaurant>? = ArrayList()
     private var isFavourite: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private var isMapView = true
     private var restaurants = RestaurantModel.getData()
 
+    fun observe(o: Observable){
+        o.addObserver(this)
+    }
+    override fun update(o: Observable?, arg: Any?) {
+        restaurantList = ((o as RestaurantModel).getData())
+        addPoints()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        observe(collection)
         arguments?.let {
             isFavourite = it.getString(isFavourite)
         }
@@ -142,21 +157,15 @@ class FavMapFragment : Fragment() {
 
     }
 
-    fun addPoints(){
+    private fun addPoints(){
         val map = view!!.findViewById<MapView>(R.id.map_view)
-        for(restaurant in this.restaurants!!){
-            map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl))
+        for(restaurant in this.restaurantList!!){
+            map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
         }
-
-        map.overlays.add(generateMarker(GeoPoint(54.2, 16.183333333 ),
-            "Test", map, "https://cdn.pixabay.com/photo/2019/11/15/05/23/dog-4627679_960_720.png"))
-        map.overlays.add(generateMarker(GeoPoint(54.2, 16.19 ),
-            "Test2", map, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6XWZyRXNLb8t5_cp9aBpp_Z5jlL1rhfNC1zSv5YjhjFnETY-1&s"))
     }
 
-fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String): Marker {
+    private fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String, description: String): Marker {
         val marker = Marker(map)
-        restaurants = RestaurantModel.getData()
         marker.position = position
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_place_red, null)
@@ -165,7 +174,7 @@ fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String): 
             fun(marker: Marker, mapView: MapView): Boolean{
                 val iv = view!!.findViewById<ImageView>(R.id.restaurant_image)
                 Picasso.get().load(url).into(iv)
-                view!!.findViewById<TextView>(R.id.restaurant_description).text = "Fancy Description"
+                view!!.findViewById<TextView>(R.id.restaurant_description).text = description
                 val detailView = view!!.findViewById<CollapsingToolbarLayout>(R.id.detail_view)
 
                 if(!detailView.isVisible){
@@ -183,6 +192,8 @@ fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String): 
 
         return marker
     }
+
+
 
 }
 
