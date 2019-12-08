@@ -2,18 +2,11 @@ package com.example.restaurantinneighborhood
 
 import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.restaurantinneighborhood.ui.main.FavMapFragment
 import com.example.restaurantinneighborhood.ui.main.SectionsPagerAdapter
-import org.osmdroid.config.Configuration
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
-import org.osmdroid.views.MapView
-import org.osmdroid.util.GeoPoint
-
 
 
 class MainActivity : AppCompatActivity(), FavMapFragment.OnFragmentInteractionListener {
