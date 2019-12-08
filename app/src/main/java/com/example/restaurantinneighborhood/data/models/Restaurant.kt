@@ -16,10 +16,12 @@ class Restaurant (snapshot: DataSnapshot) {
     init {
         try {
             val data: HashMap<String, Any> = snapshot.value as HashMap<String, Any>
+            val cords = data["location"] as HashMap<String, Any>
+            val point = GeoPoint((cords["Longitude"] as Double), (cords["Latitude"] as Double))
             id = snapshot.key ?: ""
             description = data["description"] as String
-            imageUrl = data["imageUrl"] as String
-            location = data["location"] as GeoPoint
+            imageUrl = data["imageURL"] as String
+            location = point
             name = data["name"] as String
             rating = data["rating"] as Number
             websiteUrl = data["websiteUrl"] as String

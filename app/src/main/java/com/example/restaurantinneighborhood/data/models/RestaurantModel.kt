@@ -23,21 +23,19 @@ object RestaurantModel: Observable() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 try {
                     val data: ArrayList<Restaurant> = ArrayList()
-                    if (dataSnapshot != null) {
-                        for (snapshot: DataSnapshot in dataSnapshot.children) {
-                            try {
-                                data.add(Restaurant(snapshot))
-                            }
-                            catch (e: Exception) {
-                                e.printStackTrace()
-                            }
+                    for (snapshot: DataSnapshot in dataSnapshot.children) {
+                        try {
+                            data.add(Restaurant(snapshot))
                         }
-                        restaurantList = data
-                        Log.i("RestaurantModel", "data updated, there are "
-                                + restaurantList!!.size + " restaurants in the cache")
-                        setChanged()
-                        notifyObservers()
+                        catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
+                    restaurantList = data
+                    Log.i("RestaurantModel", "data updated, there are "
+                            + restaurantList!!.size + " restaurants in the cache")
+                    setChanged()
+                    notifyObservers()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

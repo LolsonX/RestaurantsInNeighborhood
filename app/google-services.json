@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "423644884804",
-    "firebase_url": "https://restaurant-in-neighbourhood.firebaseio.com",
-    "project_id": "restaurant-in-neighbourhood",
-    "storage_bucket": "restaurant-in-neighbourhood.appspot.com"
+    "project_number": "367608614704",
+    "firebase_url": "https://restaurant-nearby-704d9.firebaseio.com",
+    "project_id": "restaurant-nearby-704d9",
+    "storage_bucket": "restaurant-nearby-704d9.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:423644884804:android:3224e6bdeca10b92a2f111",
+        "mobilesdk_app_id": "1:367608614704:android:f558ed0da040d4826e02f5",
         "android_client_info": {
           "package_name": "com.example.restaurantinneighborhood"
         }
       },
       "oauth_client": [
         {
-          "client_id": "423644884804-65dkjb593aeachhh4ivedl2ms2dmqmk5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.restaurantinneighborhood",
-            "certificate_hash": "a3ce9d0686f1502acdf4e931e6f0c2202f29e0a8"
-          }
-        },
-        {
-          "client_id": "423644884804-2ii26qg4f8s1ecg1pr8inord1ct2kice.apps.googleusercontent.com",
+          "client_id": "367608614704-5gv087i5v9bqftn0hjqcndu1avn52dmn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBfJldzGnLdLW4kPAwBcN39J7rDwsifGjM"
+          "current_key": "AIzaSyAnZ3e-13S4MDkPNwofXm-b_WMfwSqQcew"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "423644884804-2ii26qg4f8s1ecg1pr8inord1ct2kice.apps.googleusercontent.com",
+              "client_id": "367608614704-5gv087i5v9bqftn0hjqcndu1avn52dmn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

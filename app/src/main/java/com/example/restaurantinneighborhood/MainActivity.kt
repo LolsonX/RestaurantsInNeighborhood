@@ -5,9 +5,9 @@ import android.os.Bundle
 import com.google.android.material.tabs.TabLayout
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.restaurantinneighborhood.data.models.RestaurantModel
 import com.example.restaurantinneighborhood.ui.main.FavMapFragment
 import com.example.restaurantinneighborhood.ui.main.SectionsPagerAdapter
-
 
 class MainActivity : AppCompatActivity(), FavMapFragment.OnFragmentInteractionListener {
     override fun onFragmentInteraction(uri: Uri) {

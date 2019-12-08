@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListView
@@ -21,6 +20,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.restaurantinneighborhood.data.models.RestaurantModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.squareup.picasso.Picasso
 
@@ -38,6 +38,9 @@ class FavMapFragment : Fragment() {
     private var isFavourite: String? = null
     private var listener: OnFragmentInteractionListener? = null
     private var isMapView = true
+    private var restaurants = RestaurantModel.getData()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -124,7 +127,6 @@ class FavMapFragment : Fragment() {
         mapController.setZoom(15.0)
         val startPoint = GeoPoint(54.2, 16.183333333 )
         mapController.setCenter(startPoint)
-        addPoints()
 
     }
 
@@ -140,16 +142,21 @@ class FavMapFragment : Fragment() {
 
     }
 
-    private fun addPoints(){
+    fun addPoints(){
         val map = view!!.findViewById<MapView>(R.id.map_view)
+        for(restaurant in this.restaurants!!){
+            map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl))
+        }
+
         map.overlays.add(generateMarker(GeoPoint(54.2, 16.183333333 ),
-                                            "Test", map, "https://cdn.pixabay.com/photo/2019/11/15/05/23/dog-4627679_960_720.png"))
-        map.overlays.add(generateMarker(GeoPoint(54.2, 16.183334 ),
+            "Test", map, "https://cdn.pixabay.com/photo/2019/11/15/05/23/dog-4627679_960_720.png"))
+        map.overlays.add(generateMarker(GeoPoint(54.2, 16.19 ),
             "Test2", map, "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6XWZyRXNLb8t5_cp9aBpp_Z5jlL1rhfNC1zSv5YjhjFnETY-1&s"))
     }
 
-    private fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String): Marker {
+fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String): Marker {
         val marker = Marker(map)
+        restaurants = RestaurantModel.getData()
         marker.position = position
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_place_red, null)
@@ -176,7 +183,6 @@ class FavMapFragment : Fragment() {
 
         return marker
     }
-
 
 }
 
