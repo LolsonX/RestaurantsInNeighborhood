@@ -51,4 +51,9 @@ object RestaurantModel: Observable() {
     fun getData(): ArrayList<Restaurant>? {
         return restaurantList
     }
+
+    fun updateRating(newRating: Float, restaurant: Restaurant) {
+        getDatabaseRef()!!.child(restaurant.id).child("rating").setValue(newRating.toDouble())
+        setChanged()
+    }
 }

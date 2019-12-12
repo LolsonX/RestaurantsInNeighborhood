@@ -2,12 +2,12 @@ package com.example.restaurantinneighborhood
 
 import android.net.Uri
 import android.os.Bundle
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.restaurantinneighborhood.data.models.RestaurantModel
 import com.example.restaurantinneighborhood.ui.main.FavMapFragment
+import com.example.restaurantinneighborhood.ui.main.MapViewPager
 import com.example.restaurantinneighborhood.ui.main.SectionsPagerAdapter
+import com.google.android.material.tabs.TabLayout
+
 
 class MainActivity : AppCompatActivity(), FavMapFragment.OnFragmentInteractionListener {
     override fun onFragmentInteraction(uri: Uri) {
@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity(), FavMapFragment.OnFragmentInteractionLi
         setContentView(R.layout.activity_main)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        val viewPager: MapViewPager = findViewById(R.id.view_pager)
+        viewPager.setPagingEnabled(false)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)

@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
+import android.widget.*
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 
 import com.example.restaurantinneighborhood.R
@@ -19,13 +20,12 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import android.widget.ImageView
-import android.widget.TextView
 import com.example.restaurantinneighborhood.data.models.Restaurant
 import com.example.restaurantinneighborhood.data.models.RestaurantModel
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import org.osmdroid.views.CustomZoomButtonsController
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,14 +43,17 @@ class FavMapFragment : Fragment(), Observer {
     private var collection = RestaurantModel
     private var restaurantList: ArrayList<Restaurant>? = ArrayList()
     private var isFavourite: String? = null
+    var ratedOnly: Boolean = false
     private var listener: OnFragmentInteractionListener? = null
     private var isMapView = true
-    private var restaurants = RestaurantModel.getData()
+    private lateinit var adapter: RestaurantAdapter
 
     fun observe(o: Observable){
         o.addObserver(this)
     }
     override fun update(o: Observable?, arg: Any?) {
+        restaurantList!!.clear()
+        adapter.notifyDataSetInvalidated()
         restaurantList = ((o as RestaurantModel).getData())
         addPoints()
     }
@@ -133,11 +136,15 @@ class FavMapFragment : Fragment(), Observer {
 
 
     private fun initMap(view: View){
+        val listView = view.findViewById<ListView>(R.id.restaurants_list_view)
+        adapter = RestaurantAdapter(context!!, restaurantList!!)
+        listView.adapter = adapter
         val map = view.findViewById<MapView>(R.id.map_view)
         print("Initializing map")
         Configuration.getInstance().userAgentValue = "restaurant-in-neighbourhood"
         map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE )
         map.setMultiTouchControls(true)
+        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
         val mapController = map.controller
         mapController.setZoom(15.0)
         val startPoint = GeoPoint(54.2, 16.183333333 )
@@ -155,12 +162,24 @@ class FavMapFragment : Fragment(), Observer {
         view.findViewById<ListView>(R.id.restaurants_list_view).isVisible = true
         view.findViewById<FloatingActionButton>(R.id.fab).setImageResource(R.drawable.ic_map_white)
 
+
     }
 
     private fun addPoints(){
         val map = view!!.findViewById<MapView>(R.id.map_view)
+        map.overlays.clear()
         for(restaurant in this.restaurantList!!){
-            map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
+            if(ratedOnly && restaurant.rating.toFloat() >= 4.0F)
+            {
+                map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
+                adapter.add(restaurant)
+                adapter.notifyDataSetChanged()
+            }
+            else if (!ratedOnly){
+                map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
+                adapter.add(restaurant)
+                adapter.notifyDataSetChanged()
+            }
         }
     }
 
@@ -179,10 +198,12 @@ class FavMapFragment : Fragment(), Observer {
 
                 if(!detailView.isVisible){
                     detailView.visibility = View.VISIBLE
+                    view!!.findViewById<FloatingActionButton>(R.id.fab).translationY = -200.0F
                     return true
                 }
                 else{
                     detailView.visibility = View.INVISIBLE
+                    view!!.findViewById<FloatingActionButton>(R.id.fab).translationY = 0.0F
                     return true
                 }
             }
