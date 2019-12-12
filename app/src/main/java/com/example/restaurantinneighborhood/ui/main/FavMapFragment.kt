@@ -161,6 +161,8 @@ class FavMapFragment : Fragment(), Observer {
     }
     else{
         view.findViewById<MapView>(R.id.map_view).isVisible = false
+        view.findViewById<View>(R.id.detail_view).isVisible = false
+        view.findViewById<FloatingActionButton>(R.id.fab).translationY = 0.0F
         view.findViewById<ListView>(R.id.restaurants_list_view).isVisible = true
         view.findViewById<FloatingActionButton>(R.id.fab).setImageResource(R.drawable.ic_map_white)
 
@@ -176,34 +178,42 @@ class FavMapFragment : Fragment(), Observer {
             Log.println(Log.ERROR, "points", (ratedOnly && restaurant.rating.toFloat() >= 4.0F).toString())
             if(ratedOnly && restaurant.rating.toFloat() >= 4.0F)
             {
-                map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
+                map.overlays.add(generateMarker(restaurant, map))
                 adapter.add(restaurant)
                 adapter.notifyDataSetChanged()
             }
             else if (!ratedOnly){
-                map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
+                map.overlays.add(generateMarker(restaurant, map))
                 adapter.add(restaurant)
                 adapter.notifyDataSetChanged()
             }
         }
     }
 
-    private fun generateMarker(position: GeoPoint, name: String, map: MapView, url:String, description: String): Marker {
+    private fun generateMarker(restaurant: Restaurant, map: MapView): Marker {
         val marker = Marker(map)
-        marker.position = position
+        marker.position = restaurant.location
         marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
         marker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_place_red, null)
-        marker.title = name
+        marker.title = restaurant.name
         val click = Marker.OnMarkerClickListener(
             fun(marker: Marker, mapView: MapView): Boolean{
                 val iv = view!!.findViewById<ImageView>(R.id.restaurant_image)
-                Picasso.get().load(url).into(iv)
-                view!!.findViewById<TextView>(R.id.restaurant_description).text = description
+                Picasso.get().load(restaurant.imageUrl).into(iv)
+                view!!.findViewById<TextView>(R.id.restaurant_description).text = restaurant.description
+                val ratingBar = view!!.findViewById<RatingBar>(R.id.restaurant_rating)
+                ratingBar.rating = restaurant.rating.toFloat()
+                ratingBar.stepSize = 0.5F
+                ratingBar.setOnRatingBarChangeListener { ratingBar, fl, b ->
+                    restaurantList!!.clear()
+                    ratingBar.rating = fl
+                    collection.updateRating(fl, restaurant)
+                }
                 val detailView = view!!.findViewById<CollapsingToolbarLayout>(R.id.detail_view)
 
                 if(!detailView.isVisible){
                     detailView.visibility = View.VISIBLE
-                    view!!.findViewById<FloatingActionButton>(R.id.fab).translationY = -200.0F
+                    view!!.findViewById<FloatingActionButton>(R.id.fab).translationY = -330.0F
                     return true
                 }
                 else{
