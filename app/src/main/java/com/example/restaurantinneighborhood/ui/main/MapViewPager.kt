@@ -13,15 +13,11 @@ class MapViewPager(
     ViewPager(context!!, attrs) {
     private var enable = true
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        return if (enable) {
-            super.onTouchEvent(event)
-        } else false
+        return false
     }
 
     override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
-        return if (enable) {
-            super.onInterceptTouchEvent(event)
-        } else false
+        return false
     }
 
     fun setPagingEnabled(enabled: Boolean) {

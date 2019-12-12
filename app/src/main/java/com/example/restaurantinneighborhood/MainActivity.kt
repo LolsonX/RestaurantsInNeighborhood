@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity(), FavMapFragment.OnFragmentInteractionLi
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: MapViewPager = findViewById(R.id.view_pager)
-        viewPager.setPagingEnabled(false)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)

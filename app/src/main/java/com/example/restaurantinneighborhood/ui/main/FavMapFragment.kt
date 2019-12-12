@@ -4,6 +4,7 @@ import android.content.ClipDescription
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -168,7 +169,8 @@ class FavMapFragment : Fragment(), Observer {
     private fun addPoints(){
         val map = view!!.findViewById<MapView>(R.id.map_view)
         map.overlays.clear()
-        for(restaurant in this.restaurantList!!){
+        for(restaurant in restaurantList!!){
+            Log.println(Log.ERROR, "points", (ratedOnly && restaurant.rating.toFloat() >= 4.0F).toString())
             if(ratedOnly && restaurant.rating.toFloat() >= 4.0F)
             {
                 map.overlays.add(generateMarker(restaurant.location, restaurant.name, map, restaurant.imageUrl, restaurant.description))
