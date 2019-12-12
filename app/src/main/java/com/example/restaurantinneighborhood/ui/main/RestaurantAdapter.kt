@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.RatingBar
 import com.example.restaurantinneighborhood.data.models.RestaurantModel
+import com.example.restaurantinneighborhood.ui.helpers.RoundedTransformation
 
 
 class RestaurantAdapter(private val context: Context,
@@ -88,7 +89,7 @@ class RestaurantAdapter(private val context: Context,
         }
 
 // 3
-        Picasso.get().load(restaurant.imageUrl).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView)
+        Picasso.get().load(restaurant.imageUrl).placeholder(R.mipmap.ic_launcher).transform(RoundedTransformation()).into(thumbnailImageView)
         return rowView
     }
 
