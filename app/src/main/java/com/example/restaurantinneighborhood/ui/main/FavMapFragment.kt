@@ -135,6 +135,10 @@ class FavMapFragment : Fragment(), Observer {
         initMap(view)
     }
 
+    override fun onResume() {
+        super.onResume()
+        view!!.invalidate()
+    }
 
     private fun initMap(view: View){
         val listView = view.findViewById<ListView>(R.id.restaurants_list_view)

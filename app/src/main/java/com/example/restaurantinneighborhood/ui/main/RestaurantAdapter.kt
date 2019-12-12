@@ -78,7 +78,6 @@ class RestaurantAdapter(private val context: Context,
         detailTextView.text = restaurant.websiteUrl
         ratingView.rating = restaurant.rating as Float
         ratingView.setOnRatingBarChangeListener { ratingBar, fl, b ->
-            dataSource.clear()
             ratingBar.rating = fl
             RestaurantModel.updateRating(fl, restaurant)
         }
