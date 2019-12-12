@@ -38,7 +38,21 @@ class RestaurantAdapter(private val context: Context,
     }
 
     fun add(restaurant: Restaurant){
-        dataSource.add(restaurant)
+        val res = dataSource.find { r -> r.id == restaurant.id }
+        if( res ==  null)
+        {
+            dataSource.add(restaurant)
+        }
+        else{
+            if(res.rating != restaurant.rating){
+                dataSource.remove(res)
+                notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun clear(){
+        dataSource.clear()
     }
     override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
         val rowView = inflater.inflate(R.layout.list_view, p2, false)

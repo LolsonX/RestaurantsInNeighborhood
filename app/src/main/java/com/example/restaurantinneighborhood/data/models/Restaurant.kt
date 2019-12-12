@@ -32,4 +32,5 @@ class Restaurant (snapshot: DataSnapshot) {
             e.printStackTrace()
         }
     }
+
 }

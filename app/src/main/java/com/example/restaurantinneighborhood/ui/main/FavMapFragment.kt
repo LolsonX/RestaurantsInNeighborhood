@@ -54,6 +54,7 @@ class FavMapFragment : Fragment(), Observer {
     }
     override fun update(o: Observable?, arg: Any?) {
         restaurantList!!.clear()
+        adapter.clear()
         adapter.notifyDataSetInvalidated()
         restaurantList = ((o as RestaurantModel).getData())
         addPoints()
@@ -169,6 +170,8 @@ class FavMapFragment : Fragment(), Observer {
     private fun addPoints(){
         val map = view!!.findViewById<MapView>(R.id.map_view)
         map.overlays.clear()
+        restaurantList = ArrayList()
+        restaurantList = collection.getData()
         for(restaurant in restaurantList!!){
             Log.println(Log.ERROR, "points", (ratedOnly && restaurant.rating.toFloat() >= 4.0F).toString())
             if(ratedOnly && restaurant.rating.toFloat() >= 4.0F)
