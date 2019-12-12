@@ -1,6 +1,5 @@
 package com.example.restaurantinneighborhood.ui.main
 
-import android.content.ClipDescription
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -11,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.children
 import androidx.core.view.isVisible
 
 import com.example.restaurantinneighborhood.R
@@ -23,9 +21,10 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import com.example.restaurantinneighborhood.data.models.Restaurant
 import com.example.restaurantinneighborhood.data.models.RestaurantModel
+import com.example.restaurantinneighborhood.ui.helpers.RoundedTransformation
 import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Transformation
 import org.osmdroid.views.CustomZoomButtonsController
 import java.util.*
 import kotlin.collections.ArrayList
@@ -162,7 +161,7 @@ class FavMapFragment : Fragment(), Observer {
     else{
         view.findViewById<MapView>(R.id.map_view).isVisible = false
         view.findViewById<View>(R.id.detail_view).isVisible = false
-        view.findViewById<FloatingActionButton>(R.id.fab).translationY = 0.0F
+        view.findViewById<FloatingActionButton>(R.id.fab).animate().translationY(0.0F)
         view.findViewById<ListView>(R.id.restaurants_list_view).isVisible = true
         view.findViewById<FloatingActionButton>(R.id.fab).setImageResource(R.drawable.ic_map_white)
 
@@ -199,7 +198,8 @@ class FavMapFragment : Fragment(), Observer {
         val click = Marker.OnMarkerClickListener(
             fun(marker: Marker, mapView: MapView): Boolean{
                 val iv = view!!.findViewById<ImageView>(R.id.restaurant_image)
-                Picasso.get().load(restaurant.imageUrl).into(iv)
+                Picasso.get().load(restaurant.imageUrl).transform(RoundedTransformation()).into(iv)
+                view!!.findViewById<TextView>(R.id.restaurant_name).text = restaurant.name
                 view!!.findViewById<TextView>(R.id.restaurant_description).text = restaurant.description
                 val ratingBar = view!!.findViewById<RatingBar>(R.id.restaurant_rating)
                 ratingBar.rating = restaurant.rating.toFloat()
@@ -212,13 +212,15 @@ class FavMapFragment : Fragment(), Observer {
                 val detailView = view!!.findViewById<CollapsingToolbarLayout>(R.id.detail_view)
 
                 if(!detailView.isVisible){
+                    detailView.translationY = detailView.height.toFloat()
                     detailView.visibility = View.VISIBLE
-                    view!!.findViewById<FloatingActionButton>(R.id.fab).translationY = -330.0F
+                    detailView.animate().translationY(0.0F)
+                    view!!.findViewById<FloatingActionButton>(R.id.fab).animate().translationY(-330.0F)
                     return true
                 }
                 else{
-                    detailView.visibility = View.INVISIBLE
-                    view!!.findViewById<FloatingActionButton>(R.id.fab).translationY = 0.0F
+                    detailView.animate().translationY(detailView.height.toFloat())
+                    view!!.findViewById<FloatingActionButton>(R.id.fab).animate().translationY(0F)
                     return true
                 }
             }
