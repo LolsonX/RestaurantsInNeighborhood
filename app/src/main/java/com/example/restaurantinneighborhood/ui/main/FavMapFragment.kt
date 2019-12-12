@@ -191,6 +191,7 @@ class FavMapFragment : Fragment(), Observer {
                 adapter.notifyDataSetChanged()
             }
         }
+        map.invalidate()
     }
 
     private fun generateMarker(restaurant: Restaurant, map: MapView): Marker {
@@ -215,16 +216,18 @@ class FavMapFragment : Fragment(), Observer {
                 }
                 val detailView = view!!.findViewById<CollapsingToolbarLayout>(R.id.detail_view)
 
-                if(!detailView.isVisible){
+                if(detailView.alpha != 1.0F){
                     detailView.translationY = detailView.height.toFloat()
                     detailView.visibility = View.VISIBLE
                     detailView.animate().translationY(0.0F)
+                    detailView.animate().alpha(1.0F)
                     view!!.findViewById<FloatingActionButton>(R.id.fab).animate().translationY(-330.0F)
                     return true
                 }
                 else{
                     detailView.animate().translationY(detailView.height.toFloat())
                     view!!.findViewById<FloatingActionButton>(R.id.fab).animate().translationY(0F)
+                    detailView.animate().alpha(0.0F)
                     return true
                 }
             }

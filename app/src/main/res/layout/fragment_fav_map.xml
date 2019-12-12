@@ -11,7 +11,8 @@
     <org.osmdroid.views.MapView
         android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
 
 
     </org.osmdroid.views.MapView>
@@ -38,6 +39,7 @@
 
     <view
         android:id="@+id/detail_view"
+        android:alpha="0"
         class="com.google.android.material.appbar.CollapsingToolbarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +47,6 @@
         android:background="@color/colorWhite"
         android:visibility="invisible">
     <LinearLayout
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -75,24 +76,25 @@
                         android:textSize="20sp"
                         android:textColor="@color/colorBlack"/>
                     <TextView
-                    android:id="@+id/restaurant_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:textColor="@color/colorBlack"/>
+                        android:id="@+id/restaurant_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="50dp"
+                        android:textColor="@color/colorBlack"/>
+                    <RatingBar
+                        android:id="@+id/restaurant_rating"
+                        android:layout_marginStart="45dp"
+                        android:layout_width="245dp"
+                        android:layout_height="wrap_content"
+                        android:scaleX="0.7"
+                        android:scaleY="0.7"
+                        android:numStars="5"
+                        android:stepSize="0.5"
+                        android:transformPivotX="0dp" />
                 </LinearLayout>
 
 
         </LinearLayout>
-        <RatingBar
-            android:id="@+id/restaurant_rating"
-            android:layout_width="245dp"
-            android:layout_height="wrap_content"
-            android:scaleX="0.7"
-            android:scaleY="0.7"
-            android:numStars="5"
-            android:stepSize="0.5"
-            android:transformPivotX="0dp" />
     </LinearLayout>
     </view>
 
