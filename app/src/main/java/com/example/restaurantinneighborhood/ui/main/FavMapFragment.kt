@@ -154,7 +154,9 @@ class FavMapFragment : Fragment(), Observer {
     }
 
     private fun showVisible(view: View) = if (isMapView){
+        view.findViewById<MapView>(R.id.map_view).alpha = 0.0F
         view.findViewById<MapView>(R.id.map_view).isVisible = true
+        view.findViewById<MapView>(R.id.map_view).animate().alpha(1.0F)
         view.findViewById<ListView>(R.id.restaurants_list_view).isVisible = false
         view.findViewById<FloatingActionButton>(R.id.fab).setImageResource(R.drawable.ic_menu_white)
     }
@@ -162,7 +164,9 @@ class FavMapFragment : Fragment(), Observer {
         view.findViewById<MapView>(R.id.map_view).isVisible = false
         view.findViewById<View>(R.id.detail_view).isVisible = false
         view.findViewById<FloatingActionButton>(R.id.fab).animate().translationY(0.0F)
+        view.findViewById<ListView>(R.id.restaurants_list_view).alpha = 0.0F
         view.findViewById<ListView>(R.id.restaurants_list_view).isVisible = true
+        view.findViewById<ListView>(R.id.restaurants_list_view).animate().alpha(1.0F)
         view.findViewById<FloatingActionButton>(R.id.fab).setImageResource(R.drawable.ic_map_white)
 
 
